@@ -2,11 +2,9 @@ const express = require('express');
 const router = express.Router();
 const verifyToken = require('../utils/authVerify');
 
-// If user has token
-// show dashboard page
 router.get('/dashboard', verifyToken, (req, res) => {
     try {
-        res.status(200).json({
+        return res.status(200).json({
             msg: `Welcome to dashboard!!`
         })
     } catch (error) {

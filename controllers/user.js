@@ -76,7 +76,6 @@ exports.loginUser = async(req, res) => {
         // Validate email
         if(email) {
             const validatedEmail = isEmailValid(email);
-            // console.log("++++++++", validatedEmail);
             if(!validatedEmail) {
                 return res.json({
                     msg: "Invalid Email"
@@ -159,7 +158,7 @@ exports.updateUser = async(req, res) => {
             });
         // Found
         } else {
-            const { role, name, email, password } = req.body;
+            const { name, email, password } = req.body;
 
             // Validate email 
             if(email) {
@@ -183,7 +182,7 @@ exports.updateUser = async(req, res) => {
             const hashPassword = await bcrypt.hash(password, salt);
 
             // Update
-            const updatedUser = await getUserToBeUpdated.update({ role, name, email, password: hashPassword });
+            const updatedUser = await getUserToBeUpdated.update({ ...req.body, password: hashPassword });
             return res.status(200).json({
                 msg: "User updated successfully",
                 user: updatedUser
@@ -200,7 +199,7 @@ exports.deleteUser = async(req, res) => {
     try {
         // Find user
         const getUserToBeDeleted = await db.user.findOne({
-            where: {id: req.params.id}
+            where: { id: req.params.id }
         });
         // User not found
         if(!getUserToBeDeleted) {
@@ -212,7 +211,6 @@ exports.deleteUser = async(req, res) => {
             const removeUser = await db.user.destroy({
                 where: { id: req.params.id }
             });
-            console.log("deleted")
             return res.json({
                 msg: "User deleted"
         })
