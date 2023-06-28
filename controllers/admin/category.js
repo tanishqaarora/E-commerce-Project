@@ -1,4 +1,4 @@
-const db = require('../models/index.js');
+const db = require('../../models/index.js');
 
 exports.addCategory = async(req, res) => {
     try {

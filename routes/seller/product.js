@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { addProduct, getProduct, getAllProducts, updateProduct, deleteProduct } = require('../controllers/product');
-const verifyToken = require('../utils/authVerify');
-const { authorizeSeller } = require('../utils/verifyUser');
+const { addProduct, getProduct, getAllProducts, updateProduct, deleteProduct } = require('../../controllers/seller/product');
+const verifyToken = require('../../utils/authVerify');
+const { authorizeSeller } = require('../../utils/verifyUser');
 
 // Add product
 router.post('/add-product', verifyToken, authorizeSeller, addProduct);

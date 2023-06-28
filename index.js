@@ -5,9 +5,10 @@ const bodyParser = require('body-parser');
 const port = process.env.PORT || 8000;
 const app = express();
 const userRoutes = require('./routes/user');
-const categoryRoutes = require('./routes/category');
-const searchRoutes = require('./routes/search');
-const productRoutes = require('./routes/product');
+const categoryRoutes = require('./routes/admin/category');
+const searchRoutes = require('./routes/customer/search');
+const productRoutes = require('./routes/seller/product');
+const featuresRoutes = require('./routes/features');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -17,5 +18,6 @@ app.use('/', userRoutes);
 app.use('/category', categoryRoutes);
 app.use('/', searchRoutes);
 app.use('/', productRoutes);
+app.use('/', featuresRoutes);
 
 app.listen(port, () => console.log("Server is running on port: ", port));
