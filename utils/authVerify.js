@@ -14,29 +14,8 @@ module.exports = async (req, res, next) => {
         // Verify token
         const verified = jwt.verify(token, process.env.TOKEN_SECRET);
         req.user = verified;
-
-        // Authorization --> who the user is
-        const findUser = await db.user.findOne({
-            where: { id: req.user.id }
-        })
-
-        if(findUser.role === 'admin') {
-            req.user.role = findUser.role;
-            next();
-        }
-        else if(findUser.role === 'seller') {
-            req.user.role = findUser.role;
-            next();
-        }
-        else if(findUser.role === 'user') {
-            req.user.role = findUser.role;
-            next();
-        }
-        else {
-            return res.status(200).json({
-                msg: "Invalid role"
-            })
-        }
+        req.user.role = verified.user.role;
+        next();
         
     } catch (error) {
         res.status(500).json({

@@ -2,33 +2,26 @@ const db = require('../models/index.js');
 
 exports.addProduct = async(req, res) => {
     try {
-        // Check if it is 'seller'
-        if(req.user.role === 'seller') {
-            // Get Data
-            const { name, description, price, rating, categoryId } = req.body;
-            if(!rating || !name || !description || !price) {
-                return res.status(401).json({
-                    msg: "Please specify all product details"
-                })
-            } 
-            
-            if(!categoryId) {
-                return res.status(401).json({
-                    msg: "Please specify the product category"
-                })
-            } 
-
-            // Add product
-            const product = await db.product.create(req.body);
-            return res.status(200).json({
-                msg: "Product added",
-                product
-            });
-        } else {
+        // Get Data
+        const { name, description, price, rating, categoryId } = req.body;
+        if(!rating || !name || !description || !price) {
             return res.status(401).json({
-                msg: "Not authorized as seller"
+                msg: "Please specify all product details"
             })
-        }
+        } 
+        
+        if(!categoryId) {
+            return res.status(401).json({
+                msg: "Please specify the product category"
+            })
+        } 
+
+        // Add product
+        const product = await db.product.create(req.body);
+        return res.status(200).json({
+            msg: "Product added",
+            product
+        });
     } catch (error) {
         res.status(500).json({
            msg: error.message
@@ -92,35 +85,26 @@ exports.getAllProducts = async(req, res) => {
 
 exports.updateProduct = async(req, res) => {
     try {
-        console.log("role", req.user.role);
-        if(req.user.role === 'seller') {
-            // Find product
-            const findProduct = await db.product.findOne({
-                where: { id: req.params.id }
+        // Find product
+        const findProduct = await db.product.findOne({
+            where: { id: req.params.id }
+        });
+
+        // Not found
+        if(!findProduct) {
+            return res.status(404).json({
+                msg: "Product does not exist"
             });
 
-            // Not found
-            if(!findProduct) {
-                return res.status(404).json({
-                    msg: "Product does not exist"
-                });
-
-            // Found --> update
-            } else {
-                const updatedProduct = await findProduct.update(req.body);
-                
-                res.status(200).json({
-                    msg: "Product updated successfully",
-                    updatedProduct
-                });
-            }
+        // Found --> update
         } else {
-            return res.status(401).json({
-                msg: "Not authorized as seller"
+            const updatedProduct = await findProduct.update(req.body);
+            
+            res.status(200).json({
+                msg: "Product updated successfully",
+                updatedProduct
             });
         }
-        
-        
     } catch (error) {
         res.status(500).json({
            msg: error.message
@@ -130,34 +114,25 @@ exports.updateProduct = async(req, res) => {
 
 exports.deleteProduct = async(req, res) => {
     try {
-        console.log("role", req.user.role);
-        if(req.user.role === 'seller') {
-            // Find product
-            const findProduct = await db.product.findOne({
-                where: { id: req.params.id }
-            })
+        // Find product
+        const findProduct = await db.product.findOne({
+            where: { id: req.params.id }
+        })
 
-            // Not found
-            if(!findProduct) {
-                return res.status(404).json({
-                    msg: "Product does not exist"
-                });
-            // Found --> delete
-            } else {
-                const removeProduct = await db.product.destroy({
-                    where: { id: req.params.id}
-                });
-                return res.status(200).json({
-                    msg: "Product deleted"
-                });
-            }
+        // Not found
+        if(!findProduct) {
+            return res.status(404).json({
+                msg: "Product does not exist"
+            });
+        // Found --> delete
         } else {
-            return res.status(401).json({
-                msg: "Not authorized as seller"
+            const removeProduct = await db.product.destroy({
+                where: { id: req.params.id}
+            });
+            return res.status(200).json({
+                msg: "Product deleted"
             });
         }
-        
-
     } catch (error) {
         res.status(500).json({
             msg: error.message
