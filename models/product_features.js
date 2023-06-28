@@ -11,7 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Product_Features.belongsTo(models.features, {
+      Product_Features.belongsTo(models.product, {
+        foreignKey: 'productId'
+      });
+      Product_Features.belongsTo(models.feature_attribute, {
         foreignKey: 'featureId'
       });
     }
@@ -20,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     value: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'product_features',
+    modelName: 'product_feature',
   });
   return Product_Features;
 };

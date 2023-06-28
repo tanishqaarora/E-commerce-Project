@@ -21,7 +21,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'features',
+          model: 'feature_attributes',
           key: 'id'
         }
       },

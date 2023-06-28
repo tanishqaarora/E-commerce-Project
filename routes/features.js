@@ -1,16 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
-router.get('/features', async(req, res) => {
-    try {
-        const features  = await db.feature.findAll({});
-        return res.status(200).json(features)
-    } catch(error) {
-        res.status(500).json({
-            msg: error.message
-        });
-    }
-})
+const db = require('../models/index.js');
 
 router.post('/add-product-features', async (req, res) => {
     try {
@@ -18,7 +8,7 @@ router.post('/add-product-features', async (req, res) => {
         const { productId, featureId, value } = req.body;
         if(!productId || !featureId) {
             return res.status(400).json({
-                msg: "invalid"
+                msg: "invalid request"
             });
         }
         if(!value) {

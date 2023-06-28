@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('features',[{
+    await queryInterface.bulkInsert('feature_attributes',[{
       name: 'color',
       createdAt: new Date(),
       updatedAt: new Date()
@@ -26,6 +26,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('features', null, {});
+    await queryInterface.bulkDelete('feature_attributes', null, {});
   }
 };
