@@ -3,13 +3,15 @@ const db = require('../../models/index.js');
 exports.addProduct = async(req, res) => {
     try {
         // Get Data
-        const { name, description, price, rating, categoryId } = req.body;
-        if(!rating || !name || !description || !price) {
+        
+        const { name, description, color, price, rating, categoryId } = req.body;
+        if( !name || !description || !color || !price || !rating) {
             return res.status(401).json({
                 msg: "Please specify all product details"
             })
-        } 
-        
+        }
+
+        // No category
         if(!categoryId) {
             return res.status(401).json({
                 msg: "Please specify the product category"
@@ -17,7 +19,9 @@ exports.addProduct = async(req, res) => {
         } 
 
         // Add product
+        console.log(req.body)
         const product = await db.product.create(req.body);
+        console.log("product", product)
         return res.status(200).json({
             msg: "Product added",
             product
@@ -34,7 +38,10 @@ exports.getProduct = async(req, res) => {
         // Find product
         const findProduct = await db.product.findOne({
             where: { id: req.params.id },
-            include: { model: db.product_category}
+            include: [
+                { model: db.product_category },
+                { model: db.product_feature }
+            ]
         });
 
         // Product not found
