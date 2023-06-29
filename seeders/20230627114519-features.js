@@ -4,12 +4,12 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('feature_attributes',[{
-      name: 'color',
+      name: 'size',
       createdAt: new Date(),
       updatedAt: new Date()
     },
     {
-      name: 'size',
+      name: 'fabric',
       createdAt: new Date(),
       updatedAt: new Date()
     },
@@ -19,7 +19,27 @@ module.exports = {
       updatedAt: new Date()
     },
     {
-      name: 'material',
+      name: 'processor',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      name: 'RAM|SSD storage',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      name: 'screen size|display',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      name: 'operating system',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      name: 'weight',
       createdAt: new Date(),
       updatedAt: new Date()
     }]);

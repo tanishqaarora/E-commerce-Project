@@ -42,9 +42,8 @@ exports.getProduct = async(req, res) => {
             return res.status(404).json({
                 msg: "Product does not exist"
             });
-
-        // Found
         }
+        // Found
         return res.status(200).json({
             msg: "success",
             findProduct
@@ -61,17 +60,21 @@ exports.getAllProducts = async(req, res) => {
         // Find products
         const products = await db.product.findAll({
             order: ['createdAt'],
-            include: { model: db.product_category }
+            include: [
+                { model: db.product_category },
+                { model: db.product_feature }
+            ]
+
         });
 
-        // Not found
-        if(!products) {
+        // No Products
+        if(products.length === 0) {
             return res.status(404).json({
                 msg: "No products to show"
             });
         }
 
-        // Found
+        // Show products
         return res.status(200).json({
             msg: "success",
             products

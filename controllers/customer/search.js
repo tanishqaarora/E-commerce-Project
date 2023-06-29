@@ -40,7 +40,7 @@ exports.searchProductsByQuery = async(req, res) => {
                   { description: { [Op.iLike]: `%${query}%` } }
                 ],
               } 
-        }) 
+        })
 
         if(filteredProducts.length === 0) {
             return res.status(404).json({

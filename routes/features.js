@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models/index.js');
+const { addProductFeature } = require('../controllers/features');
+const verifyToken = require('../utils/authVerify');
+const { authorizeSeller } = require('../utils/verifyUser');
 
 router.post('/add-product-features', async (req, res) => {
     try {
