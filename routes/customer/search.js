@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { searchProducts, searchProductsByQuery } = require('../../controllers/customer/search');
+const { searchProducts, searchProductsByFilters } = require('../../controllers/customer/search');
 
-// Search all products by category id
+// Search all products by category
 router.get('/search/products/:categoryId', searchProducts);
 
-// Search by query 
-// like query=name or query=description
-router.get('/search/products', searchProductsByQuery);
+// Search by query or filters
+router.get('/search/products', searchProductsByFilters);
 
 
 module.exports = router;

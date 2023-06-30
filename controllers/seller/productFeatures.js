@@ -26,7 +26,7 @@ exports.addProductFeature = async(req, res) => {
         // Found
         const addFeature = await db.product_feature.create(req.body)
         return res.status(200).json({
-            msg: "feature added",
+            msg: "Product feature added",
             addFeature
         })
     } catch(error) {
