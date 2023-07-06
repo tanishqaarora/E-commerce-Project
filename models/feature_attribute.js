@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       Feature_Attribute.hasMany(models.product_feature, {
         foreignKey: 'featureId'
       })
+      Feature_Attribute.belongsToMany(models.product, {
+        through: models.product_feature,
+        foreignKey: 'featureId'
+      })
     }
   }
   Feature_Attribute.init({

@@ -1,4 +1,5 @@
 'use strict';
+// const { Product_Features }= require('./product_features')
 const {
   Model
 } = require('sequelize');
@@ -17,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
       Product.hasMany(models.product_feature, {
         foreignKey: 'productId'
       });
+      Product.belongsToMany(models.feature_attribute, {
+        through: models.product_feature,
+        foreignKey: 'productId'
+      })
     }
   }
   Product.init({

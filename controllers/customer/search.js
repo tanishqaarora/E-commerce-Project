@@ -1,21 +1,20 @@
 const db = require('../../models/index.js');
 const { Op } = require("sequelize");
 
-exports.searchProducts = async(req, res) => {
+exports.searchProducts = async (req, res) => {
     try {
         // Find products
         const products = await db.product.findAll({
             where: { categoryId: req.params.categoryId }
-            
-        }) 
-        if(products.length === 0) {
+        })
+        if (products.length === 0) {
             return res.status(404).json({
                 msg: "No products to show"
             });
         }
         return res.status(200).json({ products });
 
-    } catch(error) {
+    } catch (error) {
         res.status(500).json({
             msg: error.message
         });
@@ -24,43 +23,59 @@ exports.searchProducts = async(req, res) => {
 
 exports.searchProductsByFilters = async(req, res) => {
     try {
-        const { name, description, color, minPrice, maxPrice, rating } = req.query;
-        const filters = {};
+        const {name, description, color, price, rating, ...extraFilters} = req.body;
 
-        // Check for filter input
-        if(name) {
-            filters.name = { [Op.iLike]: `%${name}%` }
-        }
-        if(description) {
-            filters.description = { [Op.iLike]: `%${description}%` }
-        }
-        if(color) {
-            filters.color = { [Op.iLike]: `%${color}%` }
-        }
-        if(minPrice && maxPrice) {
-            filters.price = { [Op.and]: [
-            
-                { [Op.gte]: `${Number(minPrice)}` } ,
-                { [Op.lte]: `${Number(maxPrice)}` } ,
+        const filters = {
+            ...(name && { name: { [Op.iLike]: `%${name}%` } }),
+            ...(description&& { description: { [Op.iLike]: `%${description}%` } }),
+            ...(color && { color: { [Op.iLike]: `%${color}%` } }),
+            ...(price && { price: {
+                            [Op.and]: [
+                                { [Op.gte]: Number(price.min) },
+                                { [Op.lte]: Number(price.max) },
+                            ]
+                        }
+            }),
+            ...(rating && { rating: { [Op.gte]: `${value}` } })
 
-                ] 
-            }
         }
-        if(rating) {
-            filters.rating = { [Op.gte]: `${rating}` }
+
+        const values = []
+        const dynamicFilters = []
+
+        Object.keys(extraFilters).map(key => {
+            dynamicFilters.push(key)
+
+        })
+
+        Object.values(extraFilters).map(value => {
+            values.push(value)
+
+        })
+        const filteredProducts = await db.product.findAll({
+            where: filters,
+            include: [{
+                model: db.product_feature,
+                where: { value: { [Op.in]: values }},
+                required: true,
+                include: {
+                    model: db.feature_attribute,
+                    where: { name: { [Op.in]: dynamicFilters }}
+                }
+            }]
+           
+        })
+
+        if (filteredProducts.length > 0) {
+            return res.status(200).json({ filteredProducts })
         }
-        
-        // Based on filters --> find products
-        const products = await db.product.findAll({ where: filters })
-        if(products.length > 0) {
-            return res.status(200).json({ products })
-        }
-        return res.status(500).json({ 
+        return res.status(500).json({
             msg: "No products to show"
-         })
-    } catch(error) {
-        res.status(500).json({
+        })
+
+    } catch (error) {
+        return res.status(500).json({
             msg: error.message
-        });
+        })
     }
 }
