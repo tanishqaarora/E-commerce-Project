@@ -9,6 +9,7 @@ const categoryRoutes = require('./routes/admin/category');
 const searchRoutes = require('./routes/customer/search');
 const productRoutes = require('./routes/seller/product');
 const productFeaturesRoutes = require('./routes/seller/productFeatures');
+const cartRoutes = require('./routes/customer/cart');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -19,5 +20,6 @@ app.use('/category', categoryRoutes);
 app.use('/', searchRoutes);
 app.use('/', productRoutes);
 app.use('/', productFeaturesRoutes);
+app.use('/', cartRoutes);
 
 app.listen(port, () => console.log("Server is running on port: ", port));
