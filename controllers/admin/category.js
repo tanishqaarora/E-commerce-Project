@@ -1,6 +1,6 @@
 const db = require('../../models/index.js');
 
-exports.addCategory = async(req, res) => {
+const addCategory = async(req, res) => {
     try {
         // Get Data
         const { category } = req.body;
@@ -24,7 +24,7 @@ exports.addCategory = async(req, res) => {
    }
 }
 
-exports.updateCategory = async(req, res) => {
+const updateCategory = async(req, res) => {
     try {
         // Get updated data
         const { category } = req.body;
@@ -60,7 +60,7 @@ exports.updateCategory = async(req, res) => {
    }
 }
 
-exports.deleteCategory = async(req, res) => {
+const deleteCategory = async(req, res) => {
     try {
         // Find category
         const findCategory = await db.product_category.findOne({
@@ -87,4 +87,10 @@ exports.deleteCategory = async(req, res) => {
             msg: error.message
         });
     }
+}
+
+module.exports = {
+    addCategory,
+    updateCategory,
+    deleteCategory
 }

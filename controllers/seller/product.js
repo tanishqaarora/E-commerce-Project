@@ -1,6 +1,6 @@
 const db = require('../../models/index.js');
 
-exports.addProduct = async(req, res) => {
+const addProduct = async(req, res) => {
     try {
         // Get Data
         
@@ -33,7 +33,7 @@ exports.addProduct = async(req, res) => {
    }
 }
 
-exports.getProduct = async(req, res) => {
+const getProduct = async(req, res) => {
     try {
         // Find product
         const findProduct = await db.product.findOne({
@@ -62,7 +62,7 @@ exports.getProduct = async(req, res) => {
    }
 }
 
-exports.getAllProducts = async(req, res) => {
+const getAllProducts = async(req, res) => {
     try {
         // Find products
         const products = await db.product.findAll({
@@ -93,7 +93,7 @@ exports.getAllProducts = async(req, res) => {
    }
 }
 
-exports.updateProduct = async(req, res) => {
+const updateProduct = async(req, res) => {
     try {
         // Find product
         const findProduct = await db.product.findOne({
@@ -122,7 +122,7 @@ exports.updateProduct = async(req, res) => {
    }
 }
 
-exports.deleteProduct = async(req, res) => {
+const deleteProduct = async(req, res) => {
     try {
         // Find product
         const findProduct = await db.product.findOne({
@@ -148,4 +148,12 @@ exports.deleteProduct = async(req, res) => {
             msg: error.message
         });
     }
+}
+
+module.exports = {
+    addProduct,
+    getAllProducts,
+    getProduct,
+    updateProduct,
+    deleteProduct
 }

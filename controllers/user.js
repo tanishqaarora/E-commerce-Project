@@ -2,7 +2,7 @@ const db = require('../models/index.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-exports.createUser = async(req, res) => {
+const createUser = async(req, res) => {
     try {
         // Get user input
         const { role, name, email, password } = req.body;
@@ -61,7 +61,7 @@ exports.createUser = async(req, res) => {
     }
 }
 
-exports.loginUser = async(req, res) => {
+const loginUser = async(req, res) => {
     try {
         // Get user input
         const { email, password } = req.body;
@@ -109,7 +109,7 @@ exports.loginUser = async(req, res) => {
     }
 }
 
-exports.gettingUsers = async(req, res) => {
+const gettingUsers = async(req, res) => {
     try {
         const users = await db.user.findAll({
             order: ['createdAt'],
@@ -122,7 +122,7 @@ exports.gettingUsers = async(req, res) => {
     }
 }
 
-exports.getUser = async(req, res) => {
+const getUser = async(req, res) => {
     try {
         const getUser = await db.user.findOne({
             where: {id: req.params.id},
@@ -144,7 +144,7 @@ exports.getUser = async(req, res) => {
     }
 }
 
-exports.updateUser = async(req, res) => {
+const updateUser = async(req, res) => {
     try {
         // Get user from db
         const getUserToBeUpdated = await db.user.findOne({
@@ -195,7 +195,7 @@ exports.updateUser = async(req, res) => {
     }
 }
 
-exports.deleteUser = async(req, res) => {
+const deleteUser = async(req, res) => {
     try {
         // Find user
         const getUserToBeDeleted = await db.user.findOne({
@@ -231,4 +231,13 @@ function isEmailValid(email) {
     } else {
         return false;
     }
+}
+
+module.exports = {
+    createUser,
+    loginUser,
+    gettingUsers,
+    getUser,
+    updateUser,
+    deleteUser
 }

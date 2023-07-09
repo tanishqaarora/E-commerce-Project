@@ -1,7 +1,7 @@
 const db = require('../../models/index.js');
 const { Op } = require("sequelize");
 
-exports.searchProducts = async (req, res) => {
+const searchProductsByCategory = async (req, res) => {
     try {
         // Find products
         const products = await db.product.findAll({
@@ -21,7 +21,7 @@ exports.searchProducts = async (req, res) => {
     }
 }
 
-exports.searchProductsByFilters = async(req, res) => {
+const searchProductsByFilters = async(req, res) => {
     try {
         const {name, description, color, price, rating, ...extraFilters} = req.body;
 
@@ -78,4 +78,9 @@ exports.searchProductsByFilters = async(req, res) => {
             msg: error.message
         })
     }
+}
+
+module.exports = {
+    searchProductsByCategory,
+    searchProductsByFilters
 }
